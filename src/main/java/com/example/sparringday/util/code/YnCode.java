@@ -1,4 +1,5 @@
 package com.example.sparringday.util.code;
 
-public enum TestCode {
+public enum YnCode {
+    Y,N
 }
