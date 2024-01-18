@@ -8,12 +8,15 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.DynamicInsert;
+
 @Entity
 @Getter
 @Builder
+@DynamicInsert
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TB_USER")
+@Table(name = "tb_user")
 public class User extends EntityAuditor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
