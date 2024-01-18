@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.sparringday.dto.BooleanRespDto;
 import com.example.sparringday.dto.user.request.CreateUserReqDto;
 import com.example.sparringday.dto.user.request.LoginReqDto;
+import com.example.sparringday.dto.user.response.AuthenticationResponse;
 import com.example.sparringday.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -19,9 +20,8 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping("/sign-up")
-	public BooleanRespDto signUp(@RequestBody CreateUserReqDto reqDto) {
-		userService.createNewUser(reqDto.loginId(), reqDto.password());
-		return new BooleanRespDto(true);
+	public AuthenticationResponse signUp(@RequestBody CreateUserReqDto reqDto) {
+		return userService.createNewUser(reqDto.loginId(), reqDto.password());
 	}
 
 	@PostMapping("/login")
