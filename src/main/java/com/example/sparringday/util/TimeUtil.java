@@ -25,7 +25,7 @@ public class TimeUtil {
 		try {
 			LocalDate.parse(strDate, pattern);
 		} catch (DateTimeException e) {
-			log.error("[MarketPlaceDateTimeUtil.isLocalDateParseable] Can not parseable date. Input date :" + strDate);
+			log.error("[TimeUtil.isLocalDateParseable] Can not parseable date. Input date :" + strDate);
 			return false;
 		}
 		return true;
@@ -44,10 +44,10 @@ public class TimeUtil {
 	public static boolean isLocalDateParseableUseSimpleDateTime(String strDate) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		try {
-			Long longdate = Long.parseLong(strDate);
-			sdf.format(new Date(longdate));
+			long longDate = Long.parseLong(strDate);
+			sdf.format(new Date(longDate));
 		} catch (Exception e) {
-			log.error("[MarketPlaceDateTimeUtil.isLocalDateParseableUseSimpleDateTime] Can not parseable date. Input date :" + strDate);
+			log.error("[TimeUtil.isLocalDateParseableUseSimpleDateTime] Can not parseable date. Input date :" + strDate);
 			return false;
 		}
 		return true;
