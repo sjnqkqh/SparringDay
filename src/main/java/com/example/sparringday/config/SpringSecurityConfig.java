@@ -30,7 +30,10 @@ public class SpringSecurityConfig {
 			.authorizeHttpRequests(req -> req.dispatcherTypeMatchers(DispatcherType.FORWARD)
 				.permitAll()
 				.requestMatchers("/api/user/sign-up", "/api/user/login")
-				.permitAll())
+				.permitAll()
+				.anyRequest()
+				.permitAll()
+			)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.logout(Customizer.withDefaults())
 			.build();
