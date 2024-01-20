@@ -1,5 +1,6 @@
 package com.example.sparringday.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +29,10 @@ public class UserController {
 	public String login(@RequestBody LoginReqDto reqDto) {
 		userService.login(reqDto.loginId(), reqDto.password());
 		return "token";
+	}
+
+	@GetMapping("/auth-test")
+	public String authTest() {
+		return "do";
 	}
 }

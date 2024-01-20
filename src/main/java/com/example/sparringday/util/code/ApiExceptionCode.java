@@ -12,6 +12,7 @@ public enum ApiExceptionCode {
 	HEADER_FIELD_EXCEPTION(HttpStatus.BAD_REQUEST, "E0003", "Header setting error"),
 
 	LOGIN_ID_NOT_MATCH_ERROR(HttpStatus.BAD_REQUEST, "E0100", "No user exists that matches the login ID."),
+	NON_EXIST_USER_ERROR(HttpStatus.BAD_REQUEST, "E0101", "User errors that don't exist"),
 
 	INTERNAL_SERVER_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "E9999","Unknown error");
 

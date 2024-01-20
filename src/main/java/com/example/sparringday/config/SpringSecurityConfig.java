@@ -1,9 +1,11 @@
 package com.example.sparringday.config;
 
 import jakarta.servlet.DispatcherType;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableMethodSecurity
 public class SpringSecurityConfig {
 
@@ -22,6 +25,8 @@ public class SpringSecurityConfig {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+
+	// private final AuthenticationProvider authenticationProvider;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -32,10 +37,10 @@ public class SpringSecurityConfig {
 				.requestMatchers("/api/user/sign-up", "/api/user/login")
 				.permitAll()
 				.anyRequest()
-				.permitAll()
-			)
+				.authenticated())
 			.formLogin(AbstractHttpConfigurer::disable)
 			.logout(Customizer.withDefaults())
+			// .authenticationProvider()
 			.build();
 
 	}

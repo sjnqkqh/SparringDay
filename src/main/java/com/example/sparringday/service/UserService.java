@@ -33,8 +33,9 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public User getExistUser(Long userId) throws Exception {
-		return userRepository.findById(userId).orElseThrow(Exception::new);
+	public User getExistUser(Long userId) {
+		return userRepository.findById(userId)
+			.orElseThrow(() -> new CommonException(ApiExceptionCode.NON_EXIST_USER_ERROR));
 	}
 
 	@Transactional(readOnly = true)
