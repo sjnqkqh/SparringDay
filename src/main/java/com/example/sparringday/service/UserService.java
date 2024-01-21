@@ -33,7 +33,7 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	public User getExistUser(Long userId) {
+	public User findUserById(Long userId) {
 		return userRepository.findById(userId)
 			.orElseThrow(() -> new CommonException(ApiExceptionCode.NON_EXIST_USER_ERROR));
 	}
