@@ -3,11 +3,13 @@ package com.example.sparringday.config;
 import java.io.IOException;
 
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.sparringday.entity.User;
+import com.example.sparringday.repository.TokenRepository;
 import com.example.sparringday.service.UserService;
 import com.example.sparringday.util.JwtService;
 
@@ -23,6 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private final JwtService jwtService;
 	private final UserService userService;
+	private final TokenRepository tokenRepository;
 
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
@@ -42,9 +45,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		jwt = authHeader.substring(7);
 		userId = jwtService.extractUserId(jwt);
 		if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			User user = userService.getExistUser(userId);
-
+			User user = userService.findUserById(userId);
+			boolean isTokenValid = tokenRepository.findByToken(jwt)
+				.map(t -> !t.isRevoked() && !t.isExpired())
+				.orElse(false);
+			if (jwtService.isTokenValid(jwt, user) && isTokenValid) {
+				// UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+				// 	user,
+				// 	null,
+				// 	userDetails.getAuthorities()
+				// );
+			}
 		}
+
 
 	}
 }
