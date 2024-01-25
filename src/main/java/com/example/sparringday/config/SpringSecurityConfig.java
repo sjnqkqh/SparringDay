@@ -1,5 +1,7 @@
 package com.example.sparringday.config;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.*;
+
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +16,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -21,12 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SpringSecurityConfig {
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-	// private final AuthenticationProvider authenticationProvider;
+	private final JwtAuthenticationFilter authenticationFilter;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,6 +37,8 @@ public class SpringSecurityConfig {
 				.anyRequest()
 				.authenticated())
 			.formLogin(AbstractHttpConfigurer::disable)
+			.sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+			.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
 			.logout(Customizer.withDefaults())
 			// .authenticationProvider()
 			.build();
