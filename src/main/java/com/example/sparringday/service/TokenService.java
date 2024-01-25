@@ -1,6 +1,7 @@
 package com.example.sparringday.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.sparringday.entity.Token;
 import com.example.sparringday.entity.User;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class TokenService {
 	private final TokenRepository tokenRepository;
 
+	@Transactional
 	public void saveToken(User user, String jwtToken){
 		Token token = Token.builder()
 			.user(user)
