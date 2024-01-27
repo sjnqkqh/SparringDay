@@ -10,6 +10,8 @@ import com.example.sparringday.dto.BooleanRespDto;
 import com.example.sparringday.dto.user.request.CreateUserReqDto;
 import com.example.sparringday.dto.user.request.LoginReqDto;
 import com.example.sparringday.dto.user.response.AuthenticationResponse;
+import com.example.sparringday.entity.User;
+import com.example.sparringday.service.TokenService;
 import com.example.sparringday.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -19,20 +21,24 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UserController {
 	private final UserService userService;
+	private final TokenService tokenService;
 
 	@PostMapping("/sign-up")
 	public AuthenticationResponse signUp(@RequestBody CreateUserReqDto reqDto) {
-		return userService.createNewUser(reqDto.loginId(), reqDto.password());
+		User user = userService.createNewUser(reqDto);
+
+		return tokenService.saveToken(user);
 	}
 
 	@PostMapping("/login")
-	public String login(@RequestBody LoginReqDto reqDto) {
-		userService.login(reqDto.loginId(), reqDto.password());
-		return "token";
+	public AuthenticationResponse login(@RequestBody LoginReqDto reqDto) {
+		User user = userService.login(reqDto.loginId(), reqDto.password());
+
+		return tokenService.saveToken(user);
 	}
 
 	@GetMapping("/auth-test")
 	public String authTest() {
-		return "do";
+		return "Boo";
 	}
 }
