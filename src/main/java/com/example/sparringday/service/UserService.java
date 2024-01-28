@@ -27,6 +27,7 @@ public class UserService {
 		User newUser = User.builder()
 			.loginId(reqDto.loginId())
 			.encryptedPassword(passwordEncoder.encode(reqDto.password()))
+			.userType(reqDto.userType())
 			.build();
 
 		return userRepository.save(newUser);
@@ -53,8 +54,8 @@ public class UserService {
 		return user;
 	}
 
-	protected void checkPasswordMatch(String receivedPassword, String storedPassword){
-		if (!passwordEncoder.matches(receivedPassword, storedPassword)){
+	private void checkPasswordMatch(String receivedPassword, String storedPassword) {
+		if (!passwordEncoder.matches(receivedPassword, storedPassword)) {
 			throw new CommonException(ApiExceptionCode.USER_NOT_EXIST_ERROR);
 		}
 	}

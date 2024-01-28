@@ -26,16 +26,14 @@ public class SpringSecurityConfig {
 
 	private final JwtAuthenticationFilter authenticationFilter;
 
+	private static final String[] WHITE_LIST_URL = {"/api/v1/user/**",};
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.csrf(AbstractHttpConfigurer::disable)
 			.cors(AbstractHttpConfigurer::disable)
-			.authorizeHttpRequests(req -> req.dispatcherTypeMatchers(DispatcherType.FORWARD)
-				.permitAll()
-				.requestMatchers("/api/user/sign-up", "/api/user/login")
-				.permitAll()
-				.anyRequest()
-				.authenticated())
+
+			.authorizeHttpRequests(req -> req.requestMatchers(WHITE_LIST_URL).permitAll().anyRequest().authenticated())
 			.formLogin(AbstractHttpConfigurer::disable)
 			.sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
 			.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
