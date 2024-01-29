@@ -1,5 +1,6 @@
 package com.example.sparringday.config;
 
+import static com.example.sparringday.util.code.UserType.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.*;
 
 import jakarta.servlet.DispatcherType;
@@ -26,14 +27,17 @@ public class SpringSecurityConfig {
 
 	private final JwtAuthenticationFilter authenticationFilter;
 
-	private static final String[] WHITE_LIST_URL = {"/api/v1/user/**",};
+	private static final String[] WHITE_LIST_URL = {"/api/user/**",};
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.csrf(AbstractHttpConfigurer::disable)
 			.cors(AbstractHttpConfigurer::disable)
 
-			.authorizeHttpRequests(req -> req.requestMatchers(WHITE_LIST_URL).permitAll().anyRequest().authenticated())
+			.authorizeHttpRequests(req -> req.requestMatchers(WHITE_LIST_URL).permitAll()
+				.requestMatchers("/api/coach/**").hasAnyRole(COACH.name())
+				.requestMatchers("/api/master/**").hasAnyRole(MASTER.name())
+				.anyRequest().authenticated())
 			.formLogin(AbstractHttpConfigurer::disable)
 			.sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
 			.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)

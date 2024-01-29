@@ -10,5 +10,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserByLoginId(String loginId);
 
-    boolean existsByLoginIdAndIsDeleted(String loginId, Boolean isDeleted);
+    boolean existsByLoginId(String loginId);
 }

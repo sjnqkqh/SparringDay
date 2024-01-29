@@ -24,6 +24,8 @@ public class UserService {
 
 	@Transactional
 	public User createNewUser(CreateUserReqDto reqDto) {
+		checkUserLoginIdDuplication(reqDto.loginId());
+
 		User newUser = User.builder()
 			.loginId(reqDto.loginId())
 			.encryptedPassword(passwordEncoder.encode(reqDto.password()))
@@ -40,8 +42,10 @@ public class UserService {
 	}
 
 	@Transactional(readOnly = true)
-	protected boolean checkUserLoginIdDuplication(String loginId) {
-		return userRepository.existsByLoginIdAndIsDeleted(loginId, false);
+	protected void checkUserLoginIdDuplication(String loginId) {
+		if (userRepository.existsByLoginId(loginId)) {
+			throw new CommonException(ApiExceptionCode.DUPLICATE_LOGIN_ID_EXIST_ERROR);
+		}
 	}
 
 	@Transactional(readOnly = true)
