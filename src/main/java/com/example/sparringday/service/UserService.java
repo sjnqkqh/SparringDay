@@ -20,7 +20,6 @@ public class UserService {
 
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
-	// private final Slf4JLogger logger =();
 
 	@Transactional
 	public User createNewUser(CreateUserReqDto reqDto) {
@@ -37,8 +36,10 @@ public class UserService {
 
 	@Transactional(readOnly = true)
 	public User findUserById(Long userId) {
-		return userRepository.findById(userId)
-			.orElseThrow(() -> new CommonException(ApiExceptionCode.USER_NOT_EXIST_ERROR));
+		return userRepository.findById(userId).orElseThrow(() -> {
+			log.error("[UserService.findUserById] No user exist. userId:" + userId);
+			return new CommonException(ApiExceptionCode.USER_NOT_EXIST_ERROR);
+		});
 	}
 
 	@Transactional(readOnly = true)
