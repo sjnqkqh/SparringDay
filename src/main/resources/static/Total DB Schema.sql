@@ -31,6 +31,23 @@ CREATE TABLE user_boxing_info
     FOREIGN KEY (user_id) REFERENCES user (id)
 ) COMMENT '유저 추가 정보(복싱)';
 
+CREATE TABLE sparring_request
+(
+    id                BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    requester_id      BIGINT UNSIGNED                      NOT NULL,
+    target_user_id    BIGINT UNSIGNED                      NOT NULL,
+    location          VARCHAR(200)                         NOT NULL,
+    sparring_datetime DATETIME                             NOT NULL,
+    is_accepted       TINYINT(1) DEFAULT 0                 NOT NULL,
+    accepted_at       DATETIME,
+    is_deleted        TINYINT(1) DEFAULT 0                 NOT NULL,
+    deleted_at        DATETIME                             NULL,
+    created_at        DATETIME   DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at        DATETIME   DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (requester_id) REFERENCES user (id),
+    FOREIGN KEY (target_user_id) REFERENCES user (id)
+) COMMENT '스파링 신청 정보';
+
 CREATE TABLE sparring_match
 (
     id                BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
