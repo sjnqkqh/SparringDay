@@ -6,23 +6,11 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "sparring_match")
-public class SparringMatch {
+public class SparringMatch  extends EntityAuditor{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@Column(name = "requester_id")
-	private Long requesterId;
-
-	@Column(name = "target_user_id")
-	private Long targetUserId;
-
-	@Column(name = "location")
-	private String location;
-
-	@Column(name = "sparring_datetime")
-	private LocalDateTime sparringDatetime;
 
 	@Column(name = "is_finished")
 	private boolean isFinished;

@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "sparring_review")
-public class SparringReview {
+public class SparringReview  extends EntityAuditor{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
