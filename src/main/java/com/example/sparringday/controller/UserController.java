@@ -1,12 +1,12 @@
 package com.example.sparringday.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.sparringday.dto.BooleanRespDto;
 import com.example.sparringday.dto.user.request.CreateUserReqDto;
 import com.example.sparringday.dto.user.request.LoginReqDto;
 import com.example.sparringday.dto.user.response.AuthenticationResponse;
@@ -38,7 +38,8 @@ public class UserController {
 	}
 
 	@GetMapping("/auth-test")
-	public String authTest() {
+	public String authTest(@AuthenticationPrincipal User user) {
+		System.out.println("user = " + user);
 		return "Boo";
 	}
 }

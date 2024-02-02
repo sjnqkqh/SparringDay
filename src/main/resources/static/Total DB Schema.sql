@@ -1,4 +1,9 @@
 DROP TABLE IF EXISTS token;
+DROP TABLE IF EXISTS user_boxing_info;
+DROP TABLE IF EXISTS sparring_review;
+DROP TABLE IF EXISTS sparring_match;
+DROP TABLE IF EXISTS sparring_request;
+DROP TABLE IF EXISTS user_boxing_info;
 DROP TABLE IF EXISTS user;
 
 CREATE TABLE user
@@ -6,8 +11,8 @@ CREATE TABLE user
     id                 BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     login_id           VARCHAR(150)                         NOT NULL,
     encrypted_password VARCHAR(200)                         NOT NULL,
-    height             INT                                  NOT NULL,
-    weight             INT                                  NOT NULL,
+    height             INT,
+    weight             INT,
     is_deleted         TINYINT(1) DEFAULT 0                 NOT NULL,
     deleted_at         DATETIME                             NULL,
     created_at         DATETIME   DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -18,7 +23,7 @@ CREATE TABLE user_boxing_info
 (
     id                 BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     user_id            BIGINT UNSIGNED                                             NOT NULL,
-    year_of_experience INT UNSIGNED DEFAULT NOT NULL,
+    year_of_experience INT UNSIGNED DEFAULT 0                                      NOT NULL,
     numberOfSparring   INT          DEFAULT 0                                      NOT NULL,
     style              ENUM ('OUT_BOXER', 'IN_FIGHTER', 'SLUGGER', 'IN_AND_OUT')   NOT NULL,
     front_hand         ENUM ('SOUTHPAW', 'ORTHODOX')                               NOT NULL,

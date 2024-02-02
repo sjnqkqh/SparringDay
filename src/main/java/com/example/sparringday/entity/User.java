@@ -1,18 +1,18 @@
 package com.example.sparringday.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.Where;
 
-import com.example.sparringday.util.code.UserType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -30,10 +30,18 @@ public class User extends EntityAuditor {
 
     private String encryptedPassword;
 
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
-
     private Boolean isDeleted;
 
     private LocalDateTime deletedAt;
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "id=" + id +
+            ", loginId='" + loginId + '\'' +
+            ", encryptedPassword='" + encryptedPassword + '\'' +
+            ", isDeleted=" + isDeleted +
+            ", deletedAt=" + deletedAt +
+            '}';
+    }
 }
