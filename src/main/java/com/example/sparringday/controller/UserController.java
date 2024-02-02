@@ -38,7 +38,7 @@ public class UserController {
 	}
 
 	@GetMapping("/auth-test")
-	public String authTest(@AuthenticationPrincipal User user) {
+	public String authTest(@AuthenticationPrincipal(errorOnInvalidType = true) User user) {
 		System.out.println("user = " + user);
 		return "Boo";
 	}

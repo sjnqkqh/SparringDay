@@ -3,6 +3,8 @@ package com.example.sparringday.config;
 import com.example.sparringday.dto.ApiExceptionResp;
 import com.example.sparringday.util.code.ApiExceptionCode;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
@@ -26,6 +28,15 @@ public class ApiExceptionAdvice {
                         .errCd(e.getErrorCode().getCode())
                         .errMsg(e.getMessage())
                         .build());
+    }
+    @ExceptionHandler({ClassCastException.class})
+    public ResponseEntity<ApiExceptionResp> exceptionHandler(final ClassCastException e) {
+        log.error("[ApiExceptionAdvice.exceptionHandler] ClassCastException : errMsg=" + e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ApiExceptionResp.builder()
+                .errCd(ApiExceptionCode.NO_LOGIN_ERROR.getCode())
+                .errMsg(ApiExceptionCode.NO_LOGIN_ERROR.getMsg())
+                .build());
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
