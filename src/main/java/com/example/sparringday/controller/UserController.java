@@ -37,9 +37,13 @@ public class UserController {
 		return tokenService.saveToken(user);
 	}
 
-	@GetMapping("/auth-test")
-	public String authTest(@AuthenticationPrincipal(errorOnInvalidType = true) User user) {
-		System.out.println("user = " + user);
-		return "Boo";
-	}
+	// 회원 신체 정보 갱신
+
+	// 회원 기본 정보 조회
+
+	// 스파링 상대 찾기 플래그 ON
+
+	// 스파링 상대 찾기 플래그 OFF
+
+	// 로그아웃
 }

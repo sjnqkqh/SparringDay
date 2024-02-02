@@ -14,4 +14,7 @@ public class UserAdditionalInfoController {
 		System.out.println();
 	}
 
+	// 회원 복싱 정보 조회
+	// 회원 복싱 정보 수정
+	// 회원 복싱 정보 삭제
 }
