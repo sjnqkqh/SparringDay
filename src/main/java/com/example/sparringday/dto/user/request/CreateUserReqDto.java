@@ -1,4 +1,6 @@
 package com.example.sparringday.dto.user.request;
 
-public record CreateUserReqDto(String loginId, String password) {
+import com.example.sparringday.util.code.UserType;
+
+public record CreateUserReqDto(String loginId, String password, UserType userType) {
 }

@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
+
+import com.example.sparringday.util.code.UserType;
 
 @Entity
 @Getter
@@ -16,7 +20,7 @@ import org.hibernate.annotations.DynamicInsert;
 @DynamicInsert
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tb_user")
+@SQLRestriction("is_deleted = false")
 public class User extends EntityAuditor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +29,9 @@ public class User extends EntityAuditor {
     private String loginId;
 
     private String encryptedPassword;
+
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
 
     private Boolean isDeleted;
 
