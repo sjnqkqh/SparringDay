@@ -2,14 +2,26 @@ package com.example.sparringday.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.DynamicInsert;
+
+import com.example.sparringday.dto.boxinginfo.CreateBoxingInfoReqDto;
 import com.example.sparringday.util.code.BoxingStyle;
 import com.example.sparringday.util.code.FrontHand;
 import com.example.sparringday.util.code.SparringIntensity;
 import com.example.sparringday.util.code.SparringPurpose;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@DynamicInsert
 @Table(name = "user_boxing_info")
 public class UserBoxingInfo  extends EntityAuditor{
 
@@ -48,4 +60,24 @@ public class UserBoxingInfo  extends EntityAuditor{
 	@Column(name = "deleted_at")
 	private LocalDateTime deletedAt;
 
+	public static UserBoxingInfo fromUserAndDto(User user, CreateBoxingInfoReqDto reqDto) {
+		return UserBoxingInfo.builder()
+			.userId(user.getId())
+			.yearOfExperience(reqDto.yearOfExperience())
+			.numberOfSparring(reqDto.numberOfSparring())
+			.style(reqDto.style())
+			.frontHand(reqDto.frontHand())
+			.sparringPurpose(reqDto.sparringPurpose())
+			.sparringIntensity(reqDto.sparringIntensity())
+			.build();
+	}
+
+	public void updateFromDto(CreateBoxingInfoReqDto reqDto) {
+		yearOfExperience = reqDto.yearOfExperience();
+		numberOfSparring = reqDto.numberOfSparring();
+		style = reqDto.style();
+		frontHand = reqDto.frontHand();
+		sparringPurpose = reqDto.sparringPurpose();
+		sparringIntensity = reqDto.sparringIntensity();
+	}
 }
