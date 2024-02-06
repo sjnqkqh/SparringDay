@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.sparringday.config.CommonException;
@@ -22,9 +21,10 @@ import com.example.sparringday.util.code.ApiExceptionCode;
 import com.example.sparringday.util.code.SparringIntensity;
 import com.example.sparringday.util.code.SparringPurpose;
 
+import jakarta.persistence.EntityManager;
+
 @SpringBootTest
 @Import(TestContainerSettingConfig.class)
-@Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class SparringRequestServiceTest {
 
@@ -34,7 +34,11 @@ public class SparringRequestServiceTest {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private EntityManager entityManager;
+
 	@Test
+	@Transactional
 	void shouldRequestSparring() {
 		// Given
 		User requesterUser = User.builder().loginId("requester").encryptedPassword("").build();
@@ -51,6 +55,7 @@ public class SparringRequestServiceTest {
 	}
 
 	@Test
+	@Transactional
 	void requestSparringTest_실패_삭제된_대상자() {
 		// Given
 		User requesterUser = User.builder().loginId("requester").encryptedPassword("").build();
@@ -58,6 +63,7 @@ public class SparringRequestServiceTest {
 		userRepository.save(requesterUser);
 		userRepository.save(targetUser);
 		userRepository.flush();
+		entityManager.clear(); // 영속성 컨텍스트 캐시를 초기화하여 service layer에서 Select가 일어나도록 유도
 
 		// When
 		Throwable throwable = assertThrows(CommonException.class,
