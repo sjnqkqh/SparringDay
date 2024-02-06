@@ -1,4 +1,6 @@
 package com.example.sparringday.dto.user.request;
 
-public record CreateUserReqDto(String loginId, String password) {
+import jakarta.validation.constraints.NotNull;
+
+public record CreateUserReqDto(@NotNull String loginId, @NotNull String password) {
 }

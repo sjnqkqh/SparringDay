@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 
 import lombok.Getter;
 
-@Getter
 public enum ApiExceptionCode {
 
 	BAD_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "E0001", "Bad Request Exception"),
@@ -18,9 +17,9 @@ public enum ApiExceptionCode {
 
 	INTERNAL_SERVER_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "E9999","Unknown error");
 
-	private final HttpStatus httpStatus;
-	private final String code;
-	private final String msg;
+	public final HttpStatus httpStatus;
+	public final String code;
+	public final String msg;
 
 	ApiExceptionCode(HttpStatus httpStatus, String code, String msg) {
 		this.httpStatus = httpStatus;

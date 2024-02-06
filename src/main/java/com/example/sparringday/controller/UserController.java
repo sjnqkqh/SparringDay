@@ -14,6 +14,7 @@ import com.example.sparringday.entity.User;
 import com.example.sparringday.service.TokenService;
 import com.example.sparringday.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RequestMapping("/api/user")
@@ -24,7 +25,7 @@ public class UserController {
 	private final TokenService tokenService;
 
 	@PostMapping("/sign-up")
-	public AuthenticationResponse signUp(@RequestBody CreateUserReqDto reqDto) {
+	public AuthenticationResponse signUp(@RequestBody @Valid CreateUserReqDto reqDto) {
 		User user = userService.createNewUser(reqDto);
 
 		return tokenService.saveToken(user);

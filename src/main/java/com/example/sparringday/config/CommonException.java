@@ -9,7 +9,7 @@ public class CommonException extends RuntimeException{
     private final ApiExceptionCode errorCode;
 
     public CommonException(ApiExceptionCode errorCode){
-        super(errorCode.getMsg());
+        super(errorCode.msg);
         this.errorCode = errorCode;
     }
 

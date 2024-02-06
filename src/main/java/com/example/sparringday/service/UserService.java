@@ -25,7 +25,6 @@ public class UserService {
 	@Transactional
 	public User createNewUser(CreateUserReqDto reqDto) {
 		checkUserLoginIdDuplication(reqDto.loginId());
-		System.out.println("reqDto = " + reqDto);
 		User newUser = User.builder()
 			.loginId(reqDto.loginId())
 			.encryptedPassword(passwordEncoder.encode(reqDto.password()))

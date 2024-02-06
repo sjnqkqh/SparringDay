@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,6 +34,11 @@ public class User extends EntityAuditor {
     private Boolean isDeleted;
 
     private LocalDateTime deletedAt;
+
+    public void delete(LocalDateTime deletedAt){
+        this.isDeleted = true;
+        this.deletedAt = deletedAt;
+    }
 
     @Override
     public String toString() {

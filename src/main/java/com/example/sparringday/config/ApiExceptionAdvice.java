@@ -22,10 +22,10 @@ public class ApiExceptionAdvice {
 
     @ExceptionHandler({CommonException.class})
     public ResponseEntity<ApiExceptionResp> exceptionHandler(final CommonException e) {
-        log.error("[ApiExceptionAdvice.exceptionHandler] CommonException : errCd=" + e.getErrorCode().getCode() + ", errMsg=" + e.getMessage());
-        return ResponseEntity.status(e.getErrorCode().getHttpStatus())
+        log.error("[ApiExceptionAdvice.exceptionHandler] CommonException : errCd=" + e.getErrorCode().code + ", errMsg=" + e.getMessage());
+        return ResponseEntity.status(e.getErrorCode().httpStatus)
                 .body(ApiExceptionResp.builder()
-                        .errCd(e.getErrorCode().getCode())
+                        .errCd(e.getErrorCode().code)
                         .errMsg(e.getMessage())
                         .build());
     }
@@ -34,8 +34,8 @@ public class ApiExceptionAdvice {
         log.error("[ApiExceptionAdvice.exceptionHandler] ClassCastException : errMsg=" + e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(ApiExceptionResp.builder()
-                .errCd(ApiExceptionCode.NO_LOGIN_ERROR.getCode())
-                .errMsg(ApiExceptionCode.NO_LOGIN_ERROR.getMsg())
+                .errCd(ApiExceptionCode.NO_LOGIN_ERROR.code)
+                .errMsg(ApiExceptionCode.NO_LOGIN_ERROR.msg)
                 .build());
     }
 
@@ -47,8 +47,8 @@ public class ApiExceptionAdvice {
         log.error("[ApiExceptionAdvice.exceptionHandler] Method argument validation fail" + errorFieldList);
 
         return ResponseEntity.status(400).body(ApiExceptionResp.builder()
-                .errCd(ApiExceptionCode.REQUEST_VALIDATION_EXCEPTION.getCode())
-                .errMsg(ApiExceptionCode.REQUEST_VALIDATION_EXCEPTION.getMsg() + errorFieldList)
+                .errCd(ApiExceptionCode.REQUEST_VALIDATION_EXCEPTION.code)
+                .errMsg(ApiExceptionCode.REQUEST_VALIDATION_EXCEPTION.msg + errorFieldList)
                 .build());
     }
 
@@ -57,8 +57,8 @@ public class ApiExceptionAdvice {
         log.error("[ApiExceptionAdvice.exceptionHandler] Bad Request Exception. errMsg=",e);
 
         return ResponseEntity.status(400).body(ApiExceptionResp.builder()
-                .errCd(ApiExceptionCode.BAD_REQUEST_EXCEPTION.getCode())
-                .errMsg(ApiExceptionCode.BAD_REQUEST_EXCEPTION.getMsg())
+                .errCd(ApiExceptionCode.BAD_REQUEST_EXCEPTION.code)
+                .errMsg(ApiExceptionCode.BAD_REQUEST_EXCEPTION.msg)
                 .build());
     }
 
@@ -66,8 +66,8 @@ public class ApiExceptionAdvice {
     public ResponseEntity<ApiExceptionResp> exceptionHandler(final Exception e) {
         log.error("[ApiExceptionAdvice.exceptionHandler] Internal Exception. errMsg=", e);
         return ResponseEntity.status(400).body(ApiExceptionResp.builder()
-                .errCd(ApiExceptionCode.INTERNAL_SERVER_EXCEPTION.getCode())
-                .errMsg(ApiExceptionCode.INTERNAL_SERVER_EXCEPTION.getMsg())
+                .errCd(ApiExceptionCode.INTERNAL_SERVER_EXCEPTION.code)
+                .errMsg(ApiExceptionCode.INTERNAL_SERVER_EXCEPTION.msg)
                 .build());
     }
 }

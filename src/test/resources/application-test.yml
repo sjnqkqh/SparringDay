@@ -8,9 +8,3 @@ spring:
     init:
       schema-locations: classpath:schema.sql
       mode: always
-
-# logging
-decorator:
-  datasource:
-    p6spy:
-      enable-logging: true
