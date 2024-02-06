@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      schema-locations: classpath:schema.sql
+      mode: always
+
+# logging
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
