@@ -12,44 +12,50 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "sparring_request")
-public class SparringRequest {
+public class SparringRequest extends EntityAuditor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "requester_id", nullable = false)
-	private Long requesterId;
+	@ManyToOne
+	private User requester;
 
-	@Column(name = "target_user_id", nullable = false)
-	private Long targetUserId;
+	@ManyToOne
+	private User targetUser;
 
-	@Column(name = "location", nullable = false)
+	@Column(name = "location")
 	private String location;
 
-	@Column(name = "sparring_datetime", nullable = false)
+	@Column(name = "sparring_datetime")
 	private LocalDateTime sparringDatetime;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "sparring_purpose", nullable = false)
+	@Column(name = "sparring_purpose")
 	private SparringPurpose sparringPurpose;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "sparring_intensity", nullable = false)
+	@Column(name = "sparring_intensity")
 	private SparringIntensity sparringIntensity;
 
-	@Column(name = "is_accepted", nullable = false)
+	@Column(name = "is_accepted")
 	private boolean isAccepted;
 
 	@Column(name = "accepted_at")
 	private LocalDateTime acceptedAt;
 
-	@Column(name = "is_deleted", nullable = false)
+	@Column(name = "is_deleted")
 	private boolean isDeleted;
 
 	@Column(name = "deleted_at")
