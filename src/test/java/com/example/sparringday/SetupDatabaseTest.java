@@ -1,15 +1,15 @@
-package com.example.sparringday.service;
+package com.example.sparringday;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-import com.example.sparringday.TestSparringDayApplication;
+import com.example.sparringday.config.TestContainerSettingConfig;
 import com.example.sparringday.repository.UserRepository;
 
 @SpringBootTest
-@Import(TestSparringDayApplication.class)
+@Import(TestContainerSettingConfig.class)
 public class SetupDatabaseTest {
 
 	@Autowired

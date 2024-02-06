@@ -1,10 +1,8 @@
-package com.example.sparringday;
+package com.example.sparringday.config;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
@@ -12,14 +10,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.elasticsearch.ElasticsearchContainer;
-import org.testcontainers.ext.ScriptUtils;
-import org.testcontainers.jdbc.JdbcDatabaseDelegate;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
 
+import com.example.sparringday.SparringDayApplication;
+
 @TestConfiguration(proxyBeanMethods = false)
-public class TestSparringDayApplication {
+public class TestContainerSettingConfig {
 	@Bean
 	@ServiceConnection
 	MySQLContainer<?> mysqlContainer() {
@@ -38,7 +34,7 @@ public class TestSparringDayApplication {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.from(SparringDayApplication::main).with(TestSparringDayApplication.class).run(args);
+		SpringApplication.from(SparringDayApplication::main).with(TestContainerSettingConfig.class).run(args);
 	}
 
 }
