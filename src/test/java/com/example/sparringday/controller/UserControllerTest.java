@@ -4,11 +4,8 @@ import static com.example.sparringday.util.code.ApiExceptionCode.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,9 +13,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.sparringday.config.TestContainerSettingConfig;
 import com.example.sparringday.entity.User;
@@ -27,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @Import(TestContainerSettingConfig.class)
+@Transactional
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UserControllerTest {
@@ -40,11 +40,8 @@ public class UserControllerTest {
 	@Autowired
 	private UserRepository userRepository;
 
-	@AfterEach
-	public void deleteAllUserData() {
-		List<User> userList = userRepository.findAll();
-		userList.forEach(user -> user.delete(LocalDateTime.now()));
-	}
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Test
 	public void signUpTest_성공() throws Exception {
@@ -106,4 +103,67 @@ public class UserControllerTest {
 			.andExpect(status().is4xxClientError())
 			.andExpect(jsonPath("$.errCd").value(DUPLICATE_LOGIN_ID_EXIST_ERROR.code));
 	}
+
+	@Test
+	public void logInTest_Success() throws Exception {
+		// Given
+		Map<String, Object> reqDto = Map.of("loginId", "UserID", "password", "Password");
+		userRepository.save(
+			User.builder().loginId("UserID").encryptedPassword(passwordEncoder.encode("Password")).build());
+		userRepository.flush();
+
+		// When
+		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(reqDto)))
+			.andExpect(status().isOk())
+			.andReturn();
+
+		// Then
+		String response = mvcResult.getResponse().getContentAsString();
+		assertThat(response.contains("access_token")).isTrue();
+		assertThat(response.contains("refresh_token")).isTrue();
+	}
+
+	@Test
+	public void logInTest_MissingPassword_Failure() throws Exception {
+		// Given
+		Map<String, Object> reqDto = Map.of("loginId", "UserID");
+
+		// When Then
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(reqDto)))
+			.andExpect(status().is4xxClientError())
+			.andExpect(jsonPath("$.errCd").value(REQUEST_VALIDATION_EXCEPTION.code));
+	}
+
+	@Test
+	public void logInTest_MissingLoginID_Failure() throws Exception {
+		// Given
+		Map<String, Object> reqDto = Map.of("password", "Password");
+
+		// When Then
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(reqDto)))
+			.andExpect(status().is4xxClientError())
+			.andExpect(jsonPath("$.errCd").value(REQUEST_VALIDATION_EXCEPTION.code));
+	}
+
+	@Test
+	public void logInTest_invalidCredentials_Failure() throws Exception {
+		// Given
+		Map<String, Object> reqDto = Map.of("loginId", "UserID", "password", "WrongPassword");
+		userRepository.save(User.builder().loginId("UserID").encryptedPassword("Password").build());
+		userRepository.flush();
+
+		// When Then
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(reqDto)))
+			.andExpect(status().is4xxClientError())
+			.andExpect(jsonPath("$.errCd").value(INVALID_LOGIN_REQUEST_ERROR.code));
+	}
+
 }

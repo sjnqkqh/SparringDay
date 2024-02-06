@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.sparringday.config.CommonException;
-import com.example.sparringday.dto.user.request.UserBoxingInfoReqDto;
 import com.example.sparringday.dto.user.request.CreateUserReqDto;
 import com.example.sparringday.entity.User;
 import com.example.sparringday.repository.UserRepository;
@@ -43,11 +42,6 @@ public class UserService {
 		return user;
 	}
 
-	@Transactional
-	public void updateUserBoxingInfo(User user, UserBoxingInfoReqDto reqDto){
-
-	}
-
 	protected void checkUserLoginIdDuplication(String loginId) {
 		if (userRepository.existsByLoginId(loginId)) {
 			throw new CommonException(ApiExceptionCode.DUPLICATE_LOGIN_ID_EXIST_ERROR);
@@ -64,7 +58,7 @@ public class UserService {
 
 	private void checkPasswordMatch(String receivedPassword, String storedPassword) {
 		if (!passwordEncoder.matches(receivedPassword, storedPassword)) {
-			throw new CommonException(ApiExceptionCode.USER_NOT_EXIST_ERROR);
+			throw new CommonException(ApiExceptionCode.INVALID_LOGIN_REQUEST_ERROR);
 		}
 	}
 }
